@@ -59,6 +59,15 @@ checker.writeBinary(Paths.get("dictionaries/en-us.balf"));
 SpellChecker fastChecker = SpellChecker.loadBinary(Paths.get("dictionaries/en-us.balf"));
 ```
 
+Named dictionaries can also be installed into BalfSpell's per-user dictionary
+directory and loaded on subsequent runs:
+
+```java
+SpellChecker checker = SpellChecker.installDictionary("en-us");
+```
+
+The older `downloadDictionary` name remains available as a deprecated alias.
+
 ## Build and test
 
 With Maven: `mvn test` compiles the library and the dependency-free test runner. To run the runner directly: `mvn -q exec:java`.

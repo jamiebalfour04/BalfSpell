@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
  * Fast, immutable-after-build spell checker. Build with {@link Builder}.
  */
 public final class SpellChecker {
-  private static final String DICTIONARY_BASE_URL = "https://raw.githubusercontent.com/jamiebalfour/balfspell/main/binary-dictionaries/";
+  private static final String DICTIONARY_BASE_URL = "https://raw.githubusercontent.com/jamiebalfour/BalfSpell/main/binary-dictionaries/";
   private final Set<String> words;
   private final Map<String, List<String>> deletes;
   private final Map<String, Long> frequencies;
@@ -78,11 +78,11 @@ public final class SpellChecker {
     }
     Path cached = dictionaryDirectory().resolve(name + ".dic");
     if (Files.isRegularFile(cached)) return loadBinary(cached);
-    throw new FileNotFoundException("Dictionary not installed: " + name + ". Download it with downloadDictionary(\"" + name + "\")");
+    throw new FileNotFoundException("Dictionary not installed: " + name + ". Install it with installDictionary(\"" + name + "\")");
   }
 
-  /** Downloads and caches dictionaries/&lt;name&gt;.balf from GitHub. */
-  public static SpellChecker downloadDictionary(String name) throws IOException {
+  /** Installs and caches dictionaries/&lt;name&gt;.dic from the BalfSpell dictionary repository. */
+  public static SpellChecker installDictionary(String name) throws IOException {
     validateDictionaryName(name);
     Path directory = dictionaryDirectory();
     Path target = directory.resolve(name + ".dic");
@@ -100,6 +100,17 @@ public final class SpellChecker {
       catch (java.nio.file.AtomicMoveNotSupportedException e) { Files.move(temporary, target, java.nio.file.StandardCopyOption.REPLACE_EXISTING); }
     } finally { connection.disconnect(); Files.deleteIfExists(temporary); }
     return loadBinary(target);
+  }
+
+  /**
+   * Downloads and caches a dictionary.
+   *
+   * @deprecated Use {@link #installDictionary(String)}; installing is the
+   * public operation and downloading is only its implementation detail.
+   */
+  @Deprecated
+  public static SpellChecker downloadDictionary(String name) throws IOException {
+    return installDictionary(name);
   }
 
   /** Returns the writable per-user dictionary directory, falling back to ~/.balfspell. */
