@@ -1,0 +1,5 @@
+colour 9000
+centre 8500
+optimise 7000
+organise 6500
+travelling 5000
