@@ -45,6 +45,20 @@ SpellChecker checker = SpellChecker.builder()
     .build();
 ```
 
+The included `en-us.txt` contains 466,550 one-word entries and is available at both
+`dictionaries/en-us.txt` for external loading and
+`src/main/resources/dictionaries/en-us.txt` when packaged by Maven. Load it with:
+
+```java
+SpellChecker checker = SpellChecker.builder()
+    .load(Paths.get("dictionaries/en-us.txt"))
+    .build();
+
+// Build once, then use the fast cache on subsequent launches:
+checker.writeBinary(Paths.get("dictionaries/en-us.balf"));
+SpellChecker fastChecker = SpellChecker.loadBinary(Paths.get("dictionaries/en-us.balf"));
+```
+
 ## Build and test
 
 With Maven: `mvn test` compiles the library and the dependency-free test runner. To run the runner directly: `mvn -q exec:java`.
@@ -53,7 +67,7 @@ Without Maven:
 
 ```sh
 javac -d out $(find src/main/java src/test/java -name '*.java')
-java -cp out com.balfour.balfspell.SpellCheckerTest
+java -cp out jamiebalfour.balfspell.SpellCheckerTest
 ```
 
 The deletion index uses extra memory proportional to generated deletion forms, trading memory for fast candidate retrieval. `suggest` is bounded by the configured edit distance and never scans the full dictionary.

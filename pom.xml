@@ -4,9 +4,13 @@
   <groupId>com.balfour</groupId><artifactId>balfspell</artifactId><version>1.0.0</version>
   <name>BalfSpell</name><description>Dependency-free Java 11 spell-checking library</description>
   <properties><maven.compiler.release>11</maven.compiler.release><project.build.sourceEncoding>UTF-8</project.build.sourceEncoding></properties>
-  <build><plugins>
+  <build>
+    <resources>
+      <resource><directory>src/main/resources</directory><excludes><exclude>binary-dictionaries/**</exclude><exclude>dictionaries/**</exclude><exclude>**/*.dic</exclude><exclude>**/*.balf</exclude></excludes></resource>
+    </resources>
+    <plugins>
     <plugin><groupId>org.apache.maven.plugins</groupId><artifactId>maven-compiler-plugin</artifactId><version>3.11.0</version></plugin>
     <plugin><groupId>org.codehaus.mojo</groupId><artifactId>exec-maven-plugin</artifactId><version>3.1.0</version>
-      <configuration><mainClass>com.balfour.balfspell.SpellCheckerTest</mainClass></configuration></plugin>
+      <configuration><mainClass>jamiebalfour.balfspell.SpellCheckerTest</mainClass></configuration></plugin>
   </plugins></build>
 </project>
